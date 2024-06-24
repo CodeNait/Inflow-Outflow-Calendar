@@ -4,7 +4,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">5-Year Expense Tracker</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+    <style>
+        /* CSS styles */
+
+        body {
+            zoom: 0.8; /* Adjust the zoom level as needed */
+            -moz-transform: scale(0.8); /* Firefox */
+            -ms-transform: scale(0.8); /* IE 9 */
+            -webkit-transform: scale(0.8); /* Chrome, Safari, Opera */
+            transform: scale(0.8); /* Standard syntax */
+            transform-origin: top center; /* Adjust the origin point for scaling */
+            
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+            position: relative; /* Added for positioning monthly total */
+            margin-bottom: 20px; /* Added to create space for monthly total */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .navigation {
+            margin: 10px 0;
+        }
+
+        .navigation button {
+            padding: 10px;
+            margin: 5px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navigation button:hover {
+            background-color: #0056b3;
+        }
+
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-auto-rows: minmax(100px, auto);
+            gap: 1px;
+            background: #ccc;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .day-header {
+            background: #e0e0e0;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .day {
+            background: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .day:hover {
+            background-color: #e0f7fa;
+        }
+
+        .day-number {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .inflow, .outflow {
+            padding: 3px 5px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin: 2px 0;
+            text-align: right;
+        }
+
+        .inflow {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .outflow {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Additional styles for monthly total */
+        #monthlyTotal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2em;
+        }
+
+        #boldMonthlyTotal {
+            font-weight: bold;
+        }
+
+        .daily-total {
+            font-size: 0.8em;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* Additional styles for daily totals */
+        .daily-total {
+            margin-top: auto; /* Push to the bottom */
+            padding-top: 5px;
+            border-top: 1px solid #ccc;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .daily-total.inflow {
+            color: #155724; /* Same as individual inflow */
+        }
+
+        .daily-total.outflow {
+            color: #721c24; /* Same as individual outflow */
+        }
+
+        /* Add month-specific styles */
+        .container.month-0 {
+            background-color: #f9fbe7; /* January */
+        }
+
+        .container.month-1 {
+            background-color: #ede7f6; /* February */
+        }
+
+        .container.month-2 {
+            background-color: #e1f5fe; /* March */
+        }
+
+        .container.month-3 {
+            background-color: #d7ccc8; /* April */
+        }
+
+        .container.month-4 {
+            background-color: #ffe0b2; /* May */
+        }
+
+        .container.month-5 {
+            background-color: #ffccbc; /* June */
+        }
+
+        .container.month-6 {
+            background-color: #f8bbd0; /* July */
+        }
+
+        .container.month-7 {
+            background-color: #f0f4c3; /* August */
+        }
+
+        .container.month-8 {
+            background-color: #b2dfdb; /* September */
+        }
+
+        .container.month-9 {
+            background-color: #cfd8dc; /* October */
+        }
+
+        .container.month-10 {
+            background-color: #d1c4e9; /* November */
+        }
+
+        .container.month-11 {
+            background-color: #c8e6c9; /* December */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -56,234 +285,234 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const currentYear = new Date().getFullYear();
-            const yearRange = { start: currentYear - 2, end: currentYear + 2 };
-            const today = new Date();
-        
-            let selectedYear = today.getFullYear();
-            let selectedMonth = today.getMonth();
-            let invoices = loadInvoices() || [];
-            let invoiceHistory = []; // History stack for undo functionality
-        
-            function updateDisplay() {
-                document.getElementById('yearDisplay').textContent = selectedYear;
-                document.getElementById('monthDisplay').textContent = new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' });
-                renderCalendar();
-                calculateMonthlyTotal();
-                applyMonthColor();
-            }
-        
-            function renderCalendar() {
-                const calendar = document.getElementById("calendar");
-                calendar.innerHTML = '';
-        
-                const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
-                const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-        
-                const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                daysOfWeek.forEach(day => {
-                    const dayElement = document.createElement('div');
-                    dayElement.textContent = day;
-                    dayElement.classList.add('day-header');
-                    calendar.appendChild(dayElement);
-                });
-        
-                for (let i = 0; i < firstDayOfMonth; i++) {
-                    const emptyDay = document.createElement('div');
-                    emptyDay.classList.add('day');
-                    calendar.appendChild(emptyDay);
-                }
-        
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dayElement = document.createElement('div');
-                    dayElement.classList.add('day');
-                    dayElement.dataset.date = new Date(selectedYear, selectedMonth, day).toISOString().slice(0, 10);
-        
-                    const dayNumber = document.createElement('div');
-                    dayNumber.classList.add('day-number');
-                    dayNumber.textContent = day;
-                    dayElement.appendChild(dayNumber);
-        
-                    const dailyInvoices = invoices.filter(invoice => invoice.date === dayElement.dataset.date);
-                    dailyInvoices.forEach(invoice => {
-                        const invoiceElement = document.createElement('div');
-                        invoiceElement.textContent = `${invoice.type === 'inflow' ? '+' : '-'}$${invoice.amount}`;
-                        invoiceElement.classList.add(invoice.type === 'inflow' ? 'inflow' : 'outflow');
-                        dayElement.appendChild(invoiceElement);
-                    });
-        
-                    dayElement.addEventListener('click', function() {
-                        const rect = dayElement.getBoundingClientRect();
-                        const modalX = 50;
-                        const modalY = rect.top + window.pageYOffset - 150;
-        
-                        showInvoiceForm(dayElement.dataset.date, modalX, modalY);
-                    });
-        
-                    calendar.appendChild(dayElement);
-                }
-            }
-        
-            function applyMonthColor() {
-                const calendarContainer = document.querySelector('.container');
-                const monthClass = `month-${selectedMonth}`;
-                calendarContainer.classList.remove(
-                    'month-0', 'month-1', 'month-2', 'month-3', 'month-4', 'month-5',
-                    'month-6', 'month-7', 'month-8', 'month-9', 'month-10', 'month-11'
-                );
-                calendarContainer.classList.add(monthClass);
-            }
-        
-            function showInvoiceForm(date, x, y) {
-                const invoiceModal = document.getElementById('invoiceModal');
-                invoiceModal.style.display = 'block';
-                document.getElementById('selectedDate').textContent = date;
-                invoiceModal.dataset.date = date;
-        
-                const modalContent = document.querySelector('.modal-content');
-                modalContent.style.left = `${x}px`;
-                modalContent.style.top = `${y}px`;
-        
-                const closeButton = document.getElementById('closeModal');
-                closeButton.style.left = '5px';
-                closeButton.style.top = '5px';
-            }
-        
-            function hideInvoiceForm() {
-                const invoiceModal = document.getElementById('invoiceModal');
-                invoiceModal.style.display = 'none';
-                document.getElementById('invoiceForm').reset();
-            }
-        
-            function addInvoice(event) {
-                event.preventDefault();
-        
-                const date = document.getElementById('invoiceModal').dataset.date;
-                const description = document.getElementById("description").value;
-                const amount = parseFloat(document.getElementById("amount").value);
-                const type = document.getElementById("type").value;
-        
-                const newInvoice = { date, description, amount, type };
-                invoices.push(newInvoice);
-        
-                invoiceHistory.push({ action: 'add', invoice: newInvoice });
-        
-                saveInvoices(invoices);
-                renderCalendar();
-                hideInvoiceForm();
-                calculateMonthlyTotal();
-                applyMonthColor();
-            }
-        
-            function calculateMonthlyTotal() {
-                const inflows = invoices.reduce((total, invoice) => {
-                    return invoice.type === 'inflow' ? total + parseFloat(invoice.amount) : total;
-                }, 0);
-        
-                const outflows = invoices.reduce((total, invoice) => {
-                    return invoice.type === 'outflow' ? total + parseFloat(invoice.amount) : total;
-                }, 0);
-        
-                const monthlyTotal = inflows - outflows;
-                document.getElementById('monthlyTotal').textContent = `$${monthlyTotal.toFixed(2)}`;
-            }
-        
-            function saveInvoices(data) {
-                localStorage.setItem('invoices', JSON.stringify(data));
-            }
-        
-            function loadInvoices() {
-                const data = localStorage.getItem('invoices');
-                return data ? JSON.parse(data) : [];
-            }
-        
-            function resetCalendar() {
-                if (confirm("Are you sure you want to reset the calendar? This action cannot be undone.")) {
-                    invoices = [];
-                    invoiceHistory = [];
-                    saveInvoices(invoices);
-                    updateDisplay();
-                }
-            }
-        
-            function undoLastAction() {
-                if (invoiceHistory.length > 0) {
-                    const lastAction = invoiceHistory.pop();
-                    if (lastAction.action === 'add') {
-                        invoices = invoices.filter(invoice => invoice !== lastAction.invoice);
-                    }
-                    saveInvoices(invoices);
-                    updateDisplay();
-                } else {
-                    alert("No actions to undo.");
-                }
-            }
-        
-            function saveTitle() {
-                const title = document.getElementById('editableTitle').innerText;
-                document.getElementById('pageTitle').innerText = title;
-                document.title = title; // Update <title> element
-                localStorage.setItem('pageTitle', title); // Save title to localStorage
-            }
-        
-            // Load saved title on page load
-            document.getElementById('editableTitle').innerText = localStorage.getItem('pageTitle') || '5-Year Expense Tracker';
-            saveTitle(); // Call saveTitle to update both display and localStorage
-        
-            // Update title when editableTitle changes
-            document.getElementById('editableTitle').addEventListener('input', saveTitle);
-        
-            // Event listeners for navigation buttons
-            document.getElementById("prevYear").addEventListener("click", () => {
-                if (selectedYear > yearRange.start) {
-                    selectedYear--;
-                    updateDisplay();
-                }
-            });
-        
-            document.getElementById("nextYear").addEventListener("click", () => {
-                if (selectedYear < yearRange.end) {
-                    selectedYear++;
-                    updateDisplay();
-                }
-            });
-        
-            document.getElementById("prevMonth").addEventListener("click", () => {
-                if (selectedMonth > 0) {
-                    selectedMonth--;
-                } else if (selectedYear > yearRange.start) {
-                    selectedMonth
-                    selectedMonth = 11;
-                    selectedYear--;
-                }
-                updateDisplay();
-            });
+    const currentYear = new Date().getFullYear();
+    const yearRange = { start: currentYear - 2, end: currentYear + 2 };
+    const today = new Date();
 
-            document.getElementById("nextMonth").addEventListener("click", () => {
-                if (selectedMonth < 11) {
-                    selectedMonth++;
-                } else if (selectedYear < yearRange.end) {
-                    selectedMonth = 0;
-                    selectedYear++;
-                }
-                updateDisplay();
-            });
+    let selectedYear = today.getFullYear();
+    let selectedMonth = today.getMonth();
+    let invoices = loadInvoices() || [];
+    let invoiceHistory = []; // History stack for undo functionality
 
-            // Event listener for form submission
-            document.getElementById("invoiceForm").addEventListener("submit", addInvoice);
+    function updateDisplay() {
+        document.getElementById('yearDisplay').textContent = selectedYear;
+        document.getElementById('monthDisplay').textContent = new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' });
+        renderCalendar();
+        calculateMonthlyTotal();
+        applyMonthColor();
+    }
 
-            // Event listener to close modal
-            document.getElementById("closeModal").addEventListener("click", hideInvoiceForm);
+    function renderCalendar() {
+        const calendar = document.getElementById("calendar");
+        calendar.innerHTML = '';
 
-            // Event listener to reset calendar
-            document.getElementById("resetCalendar").addEventListener("click", resetCalendar);
+        const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+        const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
 
-            // Event listener to undo last action
-            document.getElementById("undoAction").addEventListener("click", undoLastAction);
-
-            // Initial display update
-            updateDisplay();
+        const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        daysOfWeek.forEach(day => {
+            const dayElement = document.createElement('div');
+            dayElement.textContent = day;
+            dayElement.classList.add('day-header');
+            calendar.appendChild(dayElement);
         });
+
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            const emptyDay = document.createElement('div');
+            emptyDay.classList.add('day');
+            calendar.appendChild(emptyDay);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.classList.add('day');
+            dayElement.dataset.date = new Date(selectedYear, selectedMonth, day).toISOString().slice(0, 10);
+
+            const dayNumber = document.createElement('div');
+            dayNumber.classList.add('day-number');
+            dayNumber.textContent = day;
+            dayElement.appendChild(dayNumber);
+
+            const dailyInvoices = invoices.filter(invoice => invoice.date === dayElement.dataset.date);
+            dailyInvoices.forEach(invoice => {
+                const invoiceElement = document.createElement('div');
+                invoiceElement.textContent = `${invoice.type === 'inflow' ? '+' : '-'}$${invoice.amount}`;
+                invoiceElement.classList.add(invoice.type === 'inflow' ? 'inflow' : 'outflow');
+                dayElement.appendChild(invoiceElement);
+            });
+
+            dayElement.addEventListener('click', function() {
+                const rect = dayElement.getBoundingClientRect();
+                const modalX = 50;
+                const modalY = rect.top + window.pageYOffset - 150;
+
+                showInvoiceForm(dayElement.dataset.date, modalX, modalY);
+            });
+
+            calendar.appendChild(dayElement);
+        }
+    }
+
+    function applyMonthColor() {
+        const calendarContainer = document.querySelector('.container');
+        const monthClass = `month-${selectedMonth}`;
+        calendarContainer.classList.remove(
+            'month-0', 'month-1', 'month-2', 'month-3', 'month-4', 'month-5',
+            'month-6', 'month-7', 'month-8', 'month-9', 'month-10', 'month-11'
+        );
+        calendarContainer.classList.add(monthClass);
+    }
+
+    function showInvoiceForm(date, x, y) {
+        const invoiceModal = document.getElementById('invoiceModal');
+        invoiceModal.style.display = 'block';
+        document.getElementById('selectedDate').textContent = date;
+        invoiceModal.dataset.date = date;
+
+        const modalContent = document.querySelector('.modal-content');
+        modalContent.style.left = `${x}px`;
+        modalContent.style.top = `${y}px`;
+
+        const closeButton = document.getElementById('closeModal');
+        closeButton.style.left = '5px';
+        closeButton.style.top = '5px';
+    }
+
+    function hideInvoiceForm() {
+        const invoiceModal = document.getElementById('invoiceModal');
+        invoiceModal.style.display = 'none';
+        document.getElementById('invoiceForm').reset();
+    }
+
+    function addInvoice(event) {
+        event.preventDefault();
+
+        const date = document.getElementById('invoiceModal').dataset.date;
+        const description = document.getElementById("description").value;
+        const amount = parseFloat(document.getElementById("amount").value);
+        const type = document.getElementById("type").value;
+
+        const newInvoice = { date, description, amount, type };
+        invoices.push(newInvoice);
+
+        invoiceHistory.push({ action: 'add', invoice: newInvoice });
+
+        saveInvoices(invoices);
+        renderCalendar();
+        hideInvoiceForm();
+        calculateMonthlyTotal();
+        applyMonthColor();
+    }
+
+    function calculateMonthlyTotal() {
+        const inflows = invoices.reduce((total, invoice) => {
+            return invoice.type === 'inflow' ? total + parseFloat(invoice.amount) : total;
+        }, 0);
+
+        const outflows = invoices.reduce((total, invoice) => {
+            return invoice.type === 'outflow' ? total + parseFloat(invoice.amount) : total;
+        }, 0);
+
+        const monthlyTotal = inflows - outflows;
+        document.getElementById('monthlyTotal').textContent = `$${monthlyTotal.toFixed(2)}`;
+    }
+
+    function saveInvoices(data) {
+        localStorage.setItem('invoices', JSON.stringify(data));
+    }
+
+    function loadInvoices() {
+        const data = localStorage.getItem('invoices');
+        return data ? JSON.parse(data) : [];
+    }
+
+    function resetCalendar() {
+        if (confirm("Are you sure you want to reset the calendar? This action cannot be undone.")) {
+            invoices = [];
+            invoiceHistory = [];
+            saveInvoices(invoices);
+            updateDisplay();
+        }
+    }
+
+    function undoLastAction() {
+        if (invoiceHistory.length > 0) {
+            const lastAction = invoiceHistory.pop();
+            if (lastAction.action === 'add') {
+                invoices = invoices.filter(invoice => invoice !== lastAction.invoice);
+            }
+            saveInvoices(invoices);
+            updateDisplay();
+        } else {
+            alert("No actions to undo.");
+        }
+    }
+
+    function saveTitle() {
+        const title = document.getElementById('editableTitle').innerText;
+        document.getElementById('pageTitle').innerText = title;
+        document.title = title; // Update <title> element
+        localStorage.setItem('pageTitle', title); // Save title to localStorage
+    }
+
+    // Load saved title on page load
+    document.getElementById('editableTitle').innerText = localStorage.getItem('pageTitle') || '5-Year Expense Tracker';
+    saveTitle(); // Call saveTitle to update both display and localStorage
+
+    // Update title when editableTitle changes
+    document.getElementById('editableTitle').addEventListener('input', saveTitle);
+
+    // Event listeners for navigation buttons
+    document.getElementById("prevYear").addEventListener("click", () => {
+        if (selectedYear > yearRange.start) {
+            selectedYear--;
+            updateDisplay();
+        }
+    });
+
+    document.getElementById("nextYear").addEventListener("click", () => {
+        if (selectedYear < yearRange.end) {
+            selectedYear++;
+            updateDisplay();
+        }
+    });
+
+    document.getElementById("prevMonth").addEventListener("click", () => {
+        if (selectedMonth > 0) {
+            selectedMonth--;
+        } else if (selectedYear > yearRange.start) {
+            selectedMonth = 11;
+            selectedYear--;
+        }
+        updateDisplay();
+    });
+
+    document.getElementById("nextMonth").addEventListener("click", () => {
+        if (selectedMonth < 11) {
+            selectedMonth++;
+        } else if (selectedYear < yearRange.end) {
+            selectedMonth = 0;
+            selectedYear++;
+        }
+        updateDisplay();
+    });
+
+    // Event listener for form submission
+    document.getElementById("invoiceForm").addEventListener("submit", addInvoice);
+
+    // Event listener to close modal
+    document.getElementById("closeModal").addEventListener("click", hideInvoiceForm);
+
+    // Event listener to reset calendar
+    document.getElementById("resetCalendar").addEventListener("click", resetCalendar);
+
+    // Event listener to undo last action
+    document.getElementById("undoAction").addEventListener("click", undoLastAction);
+
+    // Initial display update
+    updateDisplay();
+});
+
     </script>
 </body>
 </html>
